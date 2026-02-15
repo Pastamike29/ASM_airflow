@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<nmaprun>
+  <host>
+    <status state="up"/>
+    <address addr="1.1.1.1" addrtype="ipv4"/>
+    <ports>
+      <port protocol="tcp" portid="80">
+        <state state="open"/>
+        <service name="http"/>
+      </port>
+      <port protocol="tcp" portid="22">
+        <state state="closed"/>
+        <service name="ssh"/>
+      </port>
+    </ports>
+  </host>
+</nmaprun>

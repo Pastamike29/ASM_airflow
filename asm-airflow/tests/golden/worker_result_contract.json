@@ -1,0 +1,25 @@
+{
+  "job_id": "string",
+  "stage": "string",
+  "scanner": "string",
+  "target": "string",
+  "finished_at": "string",
+  "stats": "object",
+  "findings": [
+    {
+      "finding_id": "string",
+      "asset": "string",
+      "asset_id": "string",
+      "asset_type": "string",
+      "scanner": "string",
+      "state": "string",
+      "port": {
+        "anyOf": ["number", "null"]
+      },
+      "protocol": ["string", "null"],
+      "service": ["string", "null"],
+      "first_seen": "string",
+      "last_seen": "string"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+  {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "WorkerResult",
+    "type": "object",
+    "required": [
+      "job_id",
+      "stage",
+      "scanner",
+      "target",
+      "finished_at",
+      "stats",
+      "findings",
+      "errors"
+    ],
+    "properties": {
+      "job_id": { "type": "string" },
+      "stage": { "type": "string" },
+      "scanner": { "type": "string" },
+      "target": { "type": "string" },
+      "finished_at": { "type": "string", "format": "date-time" },
+      
+      "errors": {
+      "type": "array",
+      "items": { "type": "string" }
+      },
+
+      "stats": {
+        "type": "object",
+        "additionalProperties": true
+      },
+
+      "findings": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "finding_id",
+            "asset",
+            "asset_id",
+            "asset_type",
+            "scanner",
+            "state",
+            "first_seen",
+            "last_seen"
+          ],
+         "properties": {
+            "finding_id": { "type": "string" },
+            "asset": { "type": "string" },
+            "asset_id": { "type": "string" },
+            "asset_type": { "type": "string" },
+            "scanner": { "type": "string" },
+            "state": { "type": "string" },
+            "port": { "type": ["integer", "null"] },
+            "protocol": { "type": ["string", "null"] },
+            "service": { "type": ["string", "null"] },
+            "severity": { "type": ["string", "null"] },
+            "evidence": { "type": ["string", "null"] },
+            "first_seen": { "type": "string", "format": "date-time" },
+            "last_seen": { "type": "string", "format": "date-time" }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "additionalProperties": false
+  }
