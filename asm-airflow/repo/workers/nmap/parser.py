@@ -39,36 +39,40 @@ def parse_nmap_result(result: WorkerResult) -> list[Finding]:
     return findings
 
 
-def nmap_xml_to_raw(xml: str) -> dict:
-    parsed = xmltodict.parse(xml)
+def nmap_xml_to_raw(xml_output: str) -> list[dict]:
+    import xml.etree.ElementTree as ET
 
-    hosts = parsed["nmaprun"].get("host", [])
-    if isinstance(hosts, dict):
-        hosts = [hosts]
+    root = ET.fromstring(xml_output)
 
-    normalized = []
+    hosts = []
 
-    for host in hosts:
-        addr = host["address"]["@addr"]
-        ports = host.get("ports", {}).get("port", [])
+    for host in root.findall("host"):
+        
+        address_elem = host.find("address")
+        if address_elem is None:
+            continue
 
-        if isinstance(ports, dict):
-            ports = [ports]
+        address = address_elem.get("addr")
 
-        normalized_ports = []
-        for p in ports:
-            normalized_ports.append({
-                "port": int(p["@portid"]),
-                "proto": p["@protocol"],
-                "state": p["state"]["@state"],
-                "service": p.get("service", {}).get("@name"),
-            })
+        ports = []
+        ports_elem = host.find("ports")
+        if ports_elem is not None:
+            for port_elem in ports_elem.findall("port"):
+                state_elem = port_elem.find("state")
+                service_elem = port_elem.find("service")
 
-        normalized.append({
-            "address": addr,
-            "ports": normalized_ports,
-            "meta": {},
+                ports.append({
+                    "port": int(port_elem.get("portid")),
+                    "proto": port_elem.get("protocol"),
+                    "state": state_elem.get("state") if state_elem is not None else None,
+                    "service": service_elem.get("name") if service_elem is not None else None,
+                })
+
+        hosts.append({
+            "address": address,
+            "ports": ports,
         })
-    
 
-    return {"hosts": normalized}
+
+    return {"hosts": hosts}
+

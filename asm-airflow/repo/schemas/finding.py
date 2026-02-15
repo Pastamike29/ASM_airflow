@@ -1,17 +1,18 @@
 # repo/schemas/finding.py
-from dataclasses import dataclass
+
 from datetime import datetime
 from typing import Optional, Dict, Any
+from pydantic import BaseModel
 
 
-@dataclass
-class Finding:
+class Finding(BaseModel):
     finding_id: str
     asset: str
     asset_id: str
-    port: Optional[int]
-    protocol: Optional[str]
-    service: Optional[str]
+
+    port: Optional[int] = None
+    protocol: Optional[str] = None
+    service: Optional[str] = None
 
     scanner: str
     asset_type: str
@@ -20,5 +21,5 @@ class Finding:
     severity: Optional[str] = None
     evidence: Optional[Dict[str, Any]] = None
 
-    first_seen: datetime = None
-    last_seen: datetime = None
+    first_seen: datetime
+    last_seen: datetime

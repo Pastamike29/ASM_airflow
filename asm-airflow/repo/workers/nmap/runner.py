@@ -39,7 +39,8 @@ def run_nmap_worker(job: ScanJob, xml_override: str | None = None):
         xml_output = proc.stdout
 
     # Step 1: parse raw XML
-    raw_hosts = nmap_xml_to_raw(xml_output)
+    raw = nmap_xml_to_raw(xml_output)
+    raw_hosts = raw.get("hosts", [])
 
     findings = []
 
@@ -61,8 +62,8 @@ def run_nmap_worker(job: ScanJob, xml_override: str | None = None):
                     port=port["port"],
                     protocol=port.get("protocol"),
                     service=port.get("service"),
-                    first_seen=datetime.now(UTC),
-                    last_seen=datetime.now(UTC),
+                    first_seen=datetime.now(UTC).isoformat(),
+                    last_seen=datetime.now(UTC).isoformat(),
                 )
             )
 
@@ -71,7 +72,7 @@ def run_nmap_worker(job: ScanJob, xml_override: str | None = None):
         stage=job.stage,
         scanner=job.scanner,
         target=job.targets[0],
-        finished_at=datetime.now(UTC),
+        finished_at=datetime.now(UTC).isoformat(),
         findings=findings,
         errors=[],
         stats={

@@ -21,7 +21,6 @@ def test_fake_worker_schema_contract():
         Path(__file__).parent / "golden" / "worker_result_contract.json"
     )
 
-
     with contract_path.open() as f:
         contract = json.load(f)
 
